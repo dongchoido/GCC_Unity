@@ -6,45 +6,56 @@ using UnityEngine.Rendering;
 public class DrawMatrix : MonoBehaviour
 {
     [Header("Thong so ma tran")]
-    [SerializeField] Vector2Int gridSize;
-    [SerializeField] Vector2 cellSize;
+    public Vector2Int gridSize;
+    public Vector2 cellSize;
 
-    private Vector3 mousePos;
-    private Camera camera;
+    private Vector2 mousePos;
+    private Camera cam;
 
+    public bool[,] data;
     void Awake()
     {
-        camera = Camera.main;
+        cam = Camera.main;
+        data = new bool[gridSize.x, gridSize.y];
     }
-    void Update()
-    {
-        if(Input.GetMouseButtonDown(0))
-        {
-            ClickCell();
-        }
-    }
+
     void OnDrawGizmos()
     {
-        for (float i = -(float)gridSize.x / 2 + 0.5f; i <= (float)gridSize.x / 2 - 0.5f; i++)
+        Vector3 offset = new Vector3(-(gridSize.x - 1) * cellSize.x / 2, (gridSize.y - 1) * cellSize.y / 2);
+        for (int i = 0; i < gridSize.x; i++)
         {
-            for (float j = -(float)gridSize.y / 2 + 0.5f; j <= (float)gridSize.y / 2 - 0.5f; j++)
+            for (int j = 0; j < gridSize.y; j++)
             {
-                Vector3 pos = new Vector3(i * cellSize.x, j * cellSize.y, 0);
+                Vector3 pos = offset + new Vector3(i * cellSize.x, -j * cellSize.y, 0);
                 Gizmos.DrawWireCube(pos, cellSize);
             }
         }
     }
-    void ClickCell()
+    public Vector3 ClickCell()
     {
-        mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
-        if (Mathf.Abs(mousePos.x )> Mathf.Abs(gridSize.x * cellSize.x / 2 )|| Mathf.Abs(mousePos.y) > Mathf.Abs(gridSize.y * cellSize.y / 2))
-            Debug.Log("O khong hop le");
+        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        if (Mathf.Abs(mousePos.x) > Mathf.Abs(gridSize.x * cellSize.x / 2) || Mathf.Abs(mousePos.y) > Mathf.Abs(gridSize.y * cellSize.y / 2))
+        { Debug.Log("O khong hop le"); return new Vector3(0, 0, 0); }
         else
         {
-            mousePos += new Vector3(gridSize.x * cellSize.x / 2, gridSize.y * cellSize.y / 2);
+            mousePos += new Vector2(gridSize.x * cellSize.x / 2, gridSize.y * cellSize.y / 2);
             int x = Mathf.CeilToInt(mousePos.x / cellSize.x);
             int y = Mathf.CeilToInt(mousePos.y / cellSize.y);
-            Debug.Log($"x:  {x}  y:  {y}");
+            Debug.Log($"{x}:{y}");
+            return new Vector3(x, y, 0);
         }
+    }
+
+    public bool CheckCell()
+    {
+        Vector3 mouPos = ClickCell();
+        if (mouPos == Vector3.zero) return false;
+        if (data[(int)mouPos.x - 1, (int)mouPos.y - 1]) return false;
+        else { data[(int)mouPos.x - 1, (int)mouPos.y - 1] = true; return true; }
+    }
+
+    public void SetItem(Vector3 pos,Transform item)
+    {
+        item.position =new Vector2(pos.x * cellSize.x - cellSize.x / 2 - cellSize.x*gridSize.x/2, pos.y * cellSize.y - cellSize.y / 2-cellSize.y-gridSize.y/2);
     }
 }
