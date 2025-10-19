@@ -12,6 +12,8 @@ public class DrawMatrix : MonoBehaviour
     private Vector2 mousePos;
     private Camera cam;
 
+    [SerializeField] GameObject cellObj;
+
     public bool[,] data;
     void Awake()
     {
@@ -54,8 +56,13 @@ public class DrawMatrix : MonoBehaviour
         else { data[(int)mouPos.x - 1, (int)mouPos.y - 1] = true; return true; }
     }
 
-    public void SetItem(Vector3 pos,Transform item)
+    public void SetItem(Vector3 pos, Transform item)
     {
-        item.position =new Vector2(pos.x * cellSize.x - cellSize.x / 2 - cellSize.x*gridSize.x/2, pos.y * cellSize.y - cellSize.y / 2-cellSize.y-gridSize.y/2);
+        item.position = new Vector2(pos.x * cellSize.x - cellSize.x / 2 - cellSize.x * gridSize.x / 2, pos.y * cellSize.y - cellSize.y / 2 - cellSize.y * gridSize.y / 2);
+    }
+    
+    public void SetNewItem(Vector3 pos)
+    {
+        Instantiate(cellObj, new Vector2(pos.x * cellSize.x - cellSize.x / 2 - cellSize.x * gridSize.x / 2, pos.y * cellSize.y - cellSize.y / 2 - cellSize.y * gridSize.y / 2), Quaternion.identity);
     }
 }

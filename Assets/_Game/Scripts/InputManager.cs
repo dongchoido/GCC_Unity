@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager instance;
     [SerializeField] DrawMatrix drawMatrix;
+    [SerializeField] PlayerMovement playerMovement;
+    private float getAxisHorizontal;
+    private float getAxisVertical;
     [SerializeField] Tray tray;
-    private bool isHolding = false;
     IDragable dragable;
     Camera cam;
     RaycastHit2D item;
@@ -18,15 +21,19 @@ public class InputManager : MonoBehaviour
     }
     void Update()
     {
+        playerMovement.Move(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
         if (Input.GetMouseButtonDown(0))
         {
             item = Physics2D.Raycast(MousePos(), Vector2.zero);
+            if(drawMatrix.CheckCell() && item.collider == null)
+            {
+                drawMatrix.SetNewItem(drawMatrix.ClickCell());
+            }
             if (item.collider != null)
                 dragable = item.transform.GetComponent<IDragable>();
-            if(item.transform != null)
+            if (item.transform != null)
                 prevPos = item.transform.position;
             drawMatrix.ClickCell();
-            isHolding = true;
         }
         if (Input.GetMouseButton(0))
         {
@@ -58,4 +65,6 @@ public class InputManager : MonoBehaviour
         else item.transform.position = prevPos;
         return false;
     }
+
+    public bool isDraging() => item.transform != null;
 }
