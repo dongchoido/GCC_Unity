@@ -6,8 +6,6 @@ public class InputManager : MonoBehaviour
     public static InputManager instance;
     [SerializeField] DrawMatrix drawMatrix;
     [SerializeField] PlayerMovement playerMovement;
-    private float getAxisHorizontal;
-    private float getAxisVertical;
     [SerializeField] Tray tray;
     IDragable dragable;
     Camera cam;
@@ -17,7 +15,10 @@ public class InputManager : MonoBehaviour
     {
         cam = Camera.main;
         if (instance == null)
+        {
             instance = this;
+            DontDestroyOnLoad(this);
+        }
     }
     void Update()
     {
@@ -50,12 +51,13 @@ public class InputManager : MonoBehaviour
                 dragable = null;
             }
         }
-
+        if (Input.GetKeyDown(KeyCode.P))
+            playerMovement.Attack();
     }
 
     public Vector2 MousePos() => cam.ScreenToWorldPoint(Input.mousePosition);
 
-    public bool CheckDropItem()
+    public bool CheckDropItem() // Nếu ô chưa chứa gì thì cho vào, ko thì quay lại vị trí cũ
     {
         if (drawMatrix.CheckCell() && dragable != null)
         {
@@ -66,5 +68,4 @@ public class InputManager : MonoBehaviour
         return false;
     }
 
-    public bool isDraging() => item.transform != null;
 }

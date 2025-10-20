@@ -33,7 +33,7 @@ public class DrawMatrix : MonoBehaviour
             }
         }
     }
-    public Vector3 ClickCell()
+    public Vector3 ClickCell() // chuyển từ vị trí chuột sang vị trí cell
     {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         if (Mathf.Abs(mousePos.x) > Mathf.Abs(gridSize.x * cellSize.x / 2) || Mathf.Abs(mousePos.y) > Mathf.Abs(gridSize.y * cellSize.y / 2))
@@ -48,7 +48,7 @@ public class DrawMatrix : MonoBehaviour
         }
     }
 
-    public bool CheckCell()
+    public bool CheckCell() // kiểm tra xem ô đã bị chiếm chưa
     {
         Vector3 mouPos = ClickCell();
         if (mouPos == Vector3.zero) return false;
@@ -56,12 +56,12 @@ public class DrawMatrix : MonoBehaviour
         else { data[(int)mouPos.x - 1, (int)mouPos.y - 1] = true; return true; }
     }
 
-    public void SetItem(Vector3 pos, Transform item)
+    public void SetItem(Vector3 pos, Transform item) // dịch chuyển item vào ô tại vị trí pos
     {
         item.position = new Vector2(pos.x * cellSize.x - cellSize.x / 2 - cellSize.x * gridSize.x / 2, pos.y * cellSize.y - cellSize.y / 2 - cellSize.y * gridSize.y / 2);
     }
     
-    public void SetNewItem(Vector3 pos)
+    public void SetNewItem(Vector3 pos) // tạo item mới tại vị trí ô pos
     {
         Instantiate(cellObj, new Vector2(pos.x * cellSize.x - cellSize.x / 2 - cellSize.x * gridSize.x / 2, pos.y * cellSize.y - cellSize.y / 2 - cellSize.y * gridSize.y / 2), Quaternion.identity);
     }

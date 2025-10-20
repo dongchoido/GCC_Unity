@@ -6,22 +6,15 @@ public class Tray : MonoBehaviour
 {
     public List<GameObject> items;
     [SerializeField] Vector2 cellSize;
-    private Camera camera;
+    private Camera cam;
 
     void Start()
     {
-        camera = Camera.main;
+        cam = Camera.main;
         PutItemOnTray();
         ReorderItemsOnTray();
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-
-        }
-    }
     void DrawTray()
     {
         for (int i = 0; i < items.Count; i++)
@@ -56,8 +49,4 @@ public class Tray : MonoBehaviour
         ReorderItemsOnTray();
     }
 
-    void CheckClick()
-    {
-        
-    }
 }
