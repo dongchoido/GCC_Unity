@@ -999,6 +999,7 @@ GameObject:
   - component: {fileID: 1818409152}
   - component: {fileID: 1818409151}
   - component: {fileID: 1818409153}
+  - component: {fileID: 1818409154}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1067,7 +1068,7 @@ Transform:
   m_GameObject: {fileID: 1818409148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.64, y: 2.1, z: 0}
+  m_LocalPosition: {x: 5.29, y: 1.17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1161,6 +1162,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1818409154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818409148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ecb31e0d796e44293d03afe5492183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minScale: {x: 1, y: 1, z: 1}
+  maxScale: {x: 2, y: 2, z: 2}
+  scaleDuration: 1
+  colorDuration: 2
+  colorA: {r: 1, g: 0, b: 0, a: 1}
+  colorB: {r: 0, g: 0, b: 1, a: 1}
+  moveHeight: 1
+  moveDuration: 1.5
 --- !u!1 &1951169776
 GameObject:
   m_ObjectHideFlags: 0
