@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
-    [SerializeField] float moveSpeed = 3f;
+    private float moveSpeed;
     [SerializeField] float rotationSpeed = 5f;
     [SerializeField] float attackRange =1f;
     Vector2 direction;
@@ -30,15 +30,40 @@ public class PlayerMovement : MonoBehaviour
             rb.MoveRotation(newAngle);
         }
     }
-    
+
     public void Attack()
     {
-        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position,attackRange);
-        foreach(Collider2D col in cols)
+        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, attackRange);
+        foreach (Collider2D col in cols)
         {
             Enemy enemy = col.GetComponent<Enemy>();
             if (enemy != null)
                 enemy.TakeHit(col.transform.position - transform.position);
         }
     }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Interact"))
+        {
+            ITrigger objectTrigger = collision.GetComponent<ITrigger>();
+            if (objectTrigger != null)
+            {
+                objectTrigger.OnTriggerObj();
+            }
+        }
+        if(collision.CompareTag("Items"))
+        {
+            IPickable pickable = collision.GetComponent<IPickable>();
+            if (pickable != null)
+            {
+                pickable.OnPickup();
+            }
+        }
+    }
+
+    public void UpdateSpeed(float val)
+    {
+        moveSpeed = val;
+    }
+    public float GetSpeed() => moveSpeed;
 }

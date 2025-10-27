@@ -20,12 +20,14 @@ public class EnemyAnimation : MonoBehaviour
     private Renderer rend;
     private Vector3 startPos;
     private Rigidbody2D rb;
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rend = GetComponent<Renderer>();
         startPos = transform.position;
-
+    }
+    void OnEnable()
+    {
         StartCoroutine(ScaleLoop());
         StartCoroutine(ColorLoop());
         StartCoroutine(MoveLoop());
@@ -96,5 +98,14 @@ public class EnemyAnimation : MonoBehaviour
             Vector3 newPos = Vector3.Lerp(from, to, t);
             rb.MovePosition(newPos);
         }
+    }
+
+    void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+    void OnDisable()
+    {
+        StopAllCoroutines();
     }
 }

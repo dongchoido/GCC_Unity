@@ -68,4 +68,6 @@ public class InputManager : MonoBehaviour
         return false;
     }
 
+    public Transform PlayerTransform() => playerMovement.transform;
+
 }
